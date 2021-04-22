@@ -14,7 +14,12 @@ defmodule HappyTree.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: HappyTree.PubSub},
       # Start the Endpoint (http/https)
-      HappyTreeWeb.Endpoint
+      HappyTreeWeb.Endpoint,
+      {
+        DynamicSupervisor,
+        strategy: :one_for_one, name: HappyTree.DynamicSupervisor
+      },
+      {HappyTree.DeviceServer, []}
       # Start a worker by calling: HappyTree.Worker.start_link(arg)
       # {HappyTree.Worker, arg}
     ]
