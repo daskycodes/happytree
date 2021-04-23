@@ -1,0 +1,3 @@
+[submodule "ESP32-AWS-IoT"]
+	path = ESP32-AWS-IoT
+	url = https://github.com/survivingwithandroid/ESP32-AWS-IoT
