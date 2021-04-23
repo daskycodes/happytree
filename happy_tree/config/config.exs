@@ -31,6 +31,9 @@ config :ex_aws,
   secret_access_key: System.get_env("AWS_SECRET_ACCESS_KEY"),
   access_key_id: System.get_env("AWS_ACCES_KEY_ID"),
   region: "eu-central-1",
+  iot_keyfile: System.get_env("AWS_IOT_KEYFILE"),
+  iot_certfile: System.get_env("AWS_IOT_CERTFILE"),
+  iot_host: System.get_env("AWS_IOT_HOST"),
   json_codec: Jason
 
 # https://github.com/rafaeelaudibert/trifolium

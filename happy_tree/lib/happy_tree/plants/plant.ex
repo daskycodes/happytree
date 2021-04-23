@@ -17,4 +17,8 @@ defmodule HappyTree.Plants.Plant do
     |> cast(attrs, [:common_name, :slug, :image_url])
     |> validate_required([:common_name, :slug])
   end
+
+  def device(%__MODULE__{} = plant) do
+    "#{plant.slug}#{plant.id}"
+  end
 end
