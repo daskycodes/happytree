@@ -24,6 +24,25 @@ defmodule HappyTree.Application do
       # {HappyTree.Worker, arg}
     ]
 
+    Tortoise.Supervisor.start_child(
+      client_id: "tortoise",
+      handler: {HappyTree.MqttHandler, []},
+      server: {
+        Tortoise.Transport.SSL,
+        host: Application.fetch_env!(:ex_aws, :iot_host) |> to_charlist,
+        port: 8883,
+        keyfile: Application.fetch_env!(:ex_aws, :iot_keyfile) |> to_charlist,
+        certfile: Application.fetch_env!(:ex_aws, :iot_certfile) |> to_charlist,
+        cacerts: :certifi.cacerts(),
+        depth: 99,
+        versions: [:"tlsv1.2"],
+        customize_hostname_check: [
+          match_fun: :public_key.pkix_verify_hostname_match_fun(:https)
+        ]
+      },
+      subscriptions: [{"plants/+/data", 0}]
+    )
+
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: HappyTree.Supervisor]
