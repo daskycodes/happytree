@@ -19,6 +19,8 @@ defmodule HappyTree.DeviceTracker do
     GenServer.call(:"#{__MODULE__}-#{device}", :read_data)
   end
 
+  def subscribe(), do: Phoenix.PubSub.subscribe(HappyTree.PubSub, "metrics")
+
   # Server Callbacks
 
   def init(device) do
@@ -34,8 +36,6 @@ defmodule HappyTree.DeviceTracker do
   def handle_call(:read_data, _from, state) do
     {:reply, state, state}
   end
-
-  def subscribe(), do: Phoenix.PubSub.subscribe(HappyTree.PubSub, "metrics")
 
   def broadcast({:error, _reason} = error), do: error
 

@@ -43,8 +43,8 @@ defmodule HappyTreeWeb.PlantLive.Index do
   end
 
   @impl true
-  def handle_info({:updated_temperature, device, metrics}, socket) do
-    send_update(HappyTreeWeb.PlantLive.CardComponent, id: device, temperature: metrics)
+  def handle_info({:data_updated, device, metrics}, socket) do
+    send_update(HappyTreeWeb.PlantLive.CardComponent, id: device, metrics: metrics)
     {:noreply, socket}
   end
 

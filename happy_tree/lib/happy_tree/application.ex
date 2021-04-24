@@ -19,9 +19,9 @@ defmodule HappyTree.Application do
         DynamicSupervisor,
         strategy: :one_for_one, name: HappyTree.DynamicSupervisor
       },
-      {HappyTree.DeviceServer, []}
       # Start a worker by calling: HappyTree.Worker.start_link(arg)
       # {HappyTree.Worker, arg}
+      {HappyTree.DeviceServer, []}
     ]
 
     Tortoise.Supervisor.start_child(

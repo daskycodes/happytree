@@ -28,14 +28,12 @@ defmodule HappyTree.PlantsDetector do
       Enum.member?(parents, %{"Name" => "Plant"})
   end
 
-  @spec find_plant(binary) :: map() | {:error, non_neg_integer, %{}}
   def find_plant(name) do
-    with {:ok, %{"data" => data}} <- Trifolium.Plants.search(name) do
-      slug = List.first(data) |> Map.get("slug")
-      common_name = List.first(data) |> Map.get("common_name")
-      {:ok, plant} = Trifolium.Plants.find(slug)
+    with {:ok, result} <- Trifolium.Plants.search(name),
+         slug <- List.first(result["data"]) |> Map.get("slug"),
+         {:ok, plant} <- Trifolium.Plants.find(slug) do
       growth = get_in(plant, ["data", "main_species", "growth"])
-      %{slug: slug, common_name: common_name, growth: growth}
+      %{slug: slug, common_name: plant["data"]["common_name"], growth: growth}
     end
   end
 end

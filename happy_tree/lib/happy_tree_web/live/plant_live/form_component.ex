@@ -28,10 +28,15 @@ defmodule HappyTreeWeb.PlantLive.FormComponent do
   @impl true
   def handle_event("snap", %{"dataUri" => "data:image/jpeg;base64," <> base64frame}, socket) do
     image = Base.decode64!(base64frame)
-    plant_name = HappyTree.PlantsDetector.detect_plant(image)
-    plant_params = HappyTree.PlantsDetector.find_plant(plant_name)
-    save_plant(socket, :new, plant_params)
-    {:noreply, assign(socket, :plant_name, plant_name)}
+
+    with plant_name when is_binary(plant_name) <- HappyTree.PlantsDetector.detect_plant(image),
+         plant_params <- HappyTree.PlantsDetector.find_plant(plant_name) do
+      save_plant(socket, :new, plant_params)
+    else
+      _ ->
+        {:noreply,
+         socket |> put_flash(:error, "WRONG") |> push_redirect(to: socket.assigns.return_to)}
+    end
   end
 
   def handle_event("save", %{"plant" => plant_params}, socket) do

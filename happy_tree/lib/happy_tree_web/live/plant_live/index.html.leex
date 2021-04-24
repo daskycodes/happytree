@@ -15,23 +15,19 @@
       <th>Casual name</th>
       <th>Slug</th>
       <th>Image url</th>
+      <th>Metrics</th>
 
       <th></th>
     </tr>
   </thead>
   <tbody id="plants">
     <%= for plant <- @plants do %>
-      <tr id="plant-<%= plant.id %>">
-        <td><%= plant.common_name %></td>
-        <td><%= plant.slug %></td>
-        <td><%= plant.image_url %></td>
-
-        <td>
-          <span><%= live_redirect "Show", to: Routes.plant_show_path(@socket, :show, plant) %></span>
-          <span><%= live_patch "Edit", to: Routes.plant_index_path(@socket, :edit, plant) %></span>
-          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: plant.id, data: [confirm: "Are you sure?"] %></span>
-        </td>
-      </tr>
+      <%= live_component @socket,
+        HappyTreeWeb.PlantLive.CardComponent,
+        id: HappyTree.Plants.Plant.device(plant),
+        plant: plant,
+        metrics: %{}
+      %>
     <% end %>
   </tbody>
 </table>
