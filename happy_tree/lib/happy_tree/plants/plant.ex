@@ -6,7 +6,8 @@ defmodule HappyTree.Plants.Plant do
     field :common_name, :string
     field :image_url, :string
     field :slug, :string
-    field :device, :string, virtual: true
+
+    has_one :growth, HappyTree.Plants.Growth
 
     timestamps()
   end
@@ -16,6 +17,7 @@ defmodule HappyTree.Plants.Plant do
     plant
     |> cast(attrs, [:common_name, :slug, :image_url])
     |> validate_required([:common_name, :slug])
+    |> cast_assoc(:growth)
   end
 
   def device(%__MODULE__{} = plant) do

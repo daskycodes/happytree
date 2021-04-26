@@ -15,6 +15,10 @@ defmodule HappyTree.DeviceServer do
     GenServer.cast(__MODULE__, {:start_tracking, plant})
   end
 
+  def list_device_trackers() do
+    GenServer.call(__MODULE__, :list_device_trackers)
+  end
+
   def init(_args) do
     Enum.each(HappyTree.Plants.list_plants(), &start_tracking/1)
     {:ok, %State{}}
@@ -26,6 +30,10 @@ defmodule HappyTree.DeviceServer do
     result = start_device_tracker(device)
     device_trackers = Map.put(state.device_trackers, device, result)
     {:noreply, %{state | device_trackers: device_trackers}}
+  end
+
+  def handle_call(:list_device_trackers, _from, state) do
+    {:reply, state, state}
   end
 
   defp start_device_tracker(device) do
