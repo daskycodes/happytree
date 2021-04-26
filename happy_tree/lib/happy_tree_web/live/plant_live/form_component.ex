@@ -58,7 +58,9 @@ defmodule HappyTreeWeb.PlantLive.FormComponent do
 
   defp save_plant(socket, :new, plant_params) do
     case Plants.create_plant(plant_params) do
-      {:ok, _plant} ->
+      {:ok, plant} ->
+        HappyTree.DeviceServer.start_tracking(plant)
+
         {:noreply,
          socket
          |> put_flash(:info, "Plant created successfully")
