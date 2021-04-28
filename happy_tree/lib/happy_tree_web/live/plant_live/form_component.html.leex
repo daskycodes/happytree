@@ -26,5 +26,15 @@
   <%= text_input f, :image_url %>
   <%= error_tag f, :image_url %>
 
+  <%= inputs_for f, :growth, fn pg -> %>
+    <%= label pg, :atmospheric_humidity %>
+    <%= number_input pg, :atmospheric_humidity %>
+    <%= error_tag pg, :atmospheric_humidity %>
+
+    <%= label pg, :soil_humidity %>
+    <%= number_input pg, :soil_humidity %>
+    <%= error_tag pg, :soil_humidity%>
+  <% end %>
+
   <%= submit "Save", phx_disable_with: "Saving..." %>
 </form>

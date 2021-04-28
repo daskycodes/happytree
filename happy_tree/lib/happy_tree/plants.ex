@@ -35,7 +35,7 @@ defmodule HappyTree.Plants do
       ** (Ecto.NoResultsError)
 
   """
-  def get_plant!(id), do: Repo.get!(Plant, id)
+  def get_plant!(id), do: Repo.get!(Plant, id) |> Repo.preload(:growth)
 
   @doc """
   Creates a plant.

@@ -35,7 +35,9 @@ defmodule HappyTreeWeb.PlantLive.FormComponent do
     else
       _ ->
         {:noreply,
-         socket |> put_flash(:error, "WRONG") |> push_redirect(to: socket.assigns.return_to)}
+         socket
+         |> put_flash(:error, "Could not recognize a Plant, try again")
+         |> push_redirect(to: socket.assigns.return_to)}
     end
   end
 
