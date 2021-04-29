@@ -6,12 +6,18 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 
+// RGB LCD Display
+#include <Wire.h>
+#include "rgb_lcd.h"
+
 // DHT
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
 
 #define DHT_TYPE DHT11
 #define DHT_PIN 14
+
+rgb_lcd lcd;
 
 const char *SSID = "abcd";
 const char *PWD = "abcd";
@@ -25,14 +31,25 @@ DHT dht(DHT_PIN, DHT_TYPE);
 void callback(char *topic, byte *payload, unsigned int length)
 {
   Serial.println(topic);
-  if (strcmp(topic, SUBSCRIBE_WARNING_TOPIC) == 0)
+
+  if (strcmp(topic, ATMOSPHERIC_HUMIDITY_OUT_OF_RANGE) == 0)
   {
-    Serial.println("I need water");
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print(":(");
+    lcd.setCursor(0, 1);
+    lcd.print("Bitte giessen");
+    lcd.setRGB(255, 0, 0);
   }
 
-  if (strcmp(topic, SUBSCRIBE_SUCCESS_TOPIC) == 0)
+  if (strcmp(topic, ATMOSPHERIC_HUMIDITY_IN_RANGE) == 0)
   {
-    Serial.println("I feel good");
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print(":)");
+    lcd.setCursor(0, 1);
+    lcd.print("Pflanze gluecklich");
+    lcd.setRGB(127, 255, 0);
   }
 }
 
@@ -75,8 +92,8 @@ void connectToAWS()
     delay(5000);
   }
 
-  mqttClient.subscribe(SUBSCRIBE_SUCCESS_TOPIC, 0);
-  mqttClient.subscribe(SUBSCRIBE_WARNING_TOPIC, 0);
+  mqttClient.subscribe(ATMOSPHERIC_HUMIDITY_OUT_OF_RANGE, 0);
+  mqttClient.subscribe(ATMOSPHERIC_HUMIDITY_IN_RANGE, 0);
   Serial.println("MQTT Connected");
 }
 
@@ -86,6 +103,9 @@ void setup()
   dht.begin();
   connectToWiFi();
   connectToAWS();
+
+  // set up the LCD's number of columns and rows:
+  lcd.begin(16, 2)
 }
 
 void loop()

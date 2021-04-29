@@ -3,5 +3,5 @@
 #define DEVICE_NAME "sunflower1"
 
 #define PUBLISH_DATA_TOPIC "plants/sunflower1/data"
-#define SUBSCRIBE_SUCCESS_TOPIC "plants/sunflower1/success"
-#define SUBSCRIBE_WARNING_TOPIC "plants/sunflower1/warning"
+#define ATMOSPHERIC_HUMIDITY_OUT_OF_RANGE "plants/sunflower1/atmospheric_humidity_out_of_range"
+#define ATMOSPHERIC_HUMIDITY_IN_RANGE "plants/sunflower1/atmospheric_humidity_in_range"
