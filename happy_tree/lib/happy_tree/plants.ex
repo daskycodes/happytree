@@ -18,7 +18,7 @@ defmodule HappyTree.Plants do
 
   """
   def list_plants do
-    Repo.all(Plant)
+    Repo.all(Plant) |> Repo.preload(:growth)
   end
 
   @doc """
@@ -36,6 +36,11 @@ defmodule HappyTree.Plants do
 
   """
   def get_plant!(id), do: Repo.get!(Plant, id) |> Repo.preload(:growth)
+
+  def get_plant_by_device!(device) do
+    id = String.replace(device, ~r/[a-z\-]+/, "")
+    Repo.get!(Plant, id) |> Repo.preload(:growth)
+  end
 
   @doc """
   Creates a plant.

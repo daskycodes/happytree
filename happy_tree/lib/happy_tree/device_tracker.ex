@@ -2,13 +2,13 @@ defmodule HappyTree.DeviceTracker do
   use GenServer
 
   defmodule State do
-    defstruct device: nil, data: nil
+    defstruct device: nil, data: nil, plant: nil
   end
 
   # Client Callbacks
 
-  def start_link(device) do
-    GenServer.start_link(__MODULE__, device, name: :"#{__MODULE__}-#{device}")
+  def start_link(%{device: device, plant: _plant} = args) do
+    GenServer.start_link(__MODULE__, args, name: :"#{__MODULE__}-#{device}")
   end
 
   def update_data(device, data) do
@@ -23,12 +23,13 @@ defmodule HappyTree.DeviceTracker do
 
   # Server Callbacks
 
-  def init(device) do
-    {:ok, %State{device: device, data: %{}}}
+  def init(%{device: device, plant: plant}) do
+    {:ok, %State{device: device, data: %{}, plant: plant}}
   end
 
   def handle_call({:update_data, data}, _from, state) do
     data = Jason.decode!(data)
+    HappyTree.PlantChecker.check(state, data)
     broadcast({:ok, state.device, data}, :data_updated)
     {:reply, :ok, %{state | data: data}}
   end

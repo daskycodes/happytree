@@ -27,7 +27,7 @@ defmodule HappyTree.DeviceServer do
   def handle_cast({:start_tracking, plant}, state) do
     device = HappyTree.Plants.Plant.device(plant)
     Logger.info("Starting to track #{device} metrics")
-    result = start_device_tracker(device)
+    result = start_device_tracker(%{device: device, plant: plant})
     device_trackers = Map.put(state.device_trackers, device, result)
     {:noreply, %{state | device_trackers: device_trackers}}
   end
