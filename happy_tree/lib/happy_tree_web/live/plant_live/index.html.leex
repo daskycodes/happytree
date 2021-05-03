@@ -1,35 +1,21 @@
-<h1>Listing Plants</h1>
-
-<%= if @live_action in [:new, :edit] do %>
-  <%= live_modal @socket, HappyTreeWeb.PlantLive.FormComponent,
-    id: @plant.id || :new,
-    title: @page_title,
-    action: @live_action,
-    plant: @plant,
-    return_to: Routes.plant_index_path(@socket, :index) %>
-<% end %>
-
-<table>
-  <thead>
-    <tr>
-      <th>Casual name</th>
-      <th>Slug</th>
-      <th>Image url</th>
-      <th>Metrics</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="plants">
-    <%= for plant <- @plants do %>
-      <%= live_component @socket,
-        HappyTreeWeb.PlantLive.CardComponent,
-        id: HappyTree.Plants.Plant.device(plant),
-        plant: plant,
-        metrics: %{}
-      %>
-    <% end %>
-  </tbody>
-</table>
-
-<span><%= live_patch "New Plant", to: Routes.plant_index_path(@socket, :new) %></span>
+<section class="mx-auto container my-12">
+  <div class="m-4 w-32 h-12 bg-gray-700 rounded-lg flex items-center text-white text-center shadow-md">
+    <span class="mx-auto"><%= live_patch "New Plant", to: Routes.plant_index_path(@socket, :new) %></span>
+  </div>
+  <%= if @live_action in [:new, :edit] do %>
+    <%= live_modal @socket, HappyTreeWeb.PlantLive.FormComponent,
+      id: @plant.id || :new,
+      title: @page_title,
+      action: @live_action,
+      plant: @plant,
+      return_to: Routes.plant_index_path(@socket, :index) %>
+  <% end %>
+  <%= for plant <- @plants do %>
+    <%= live_component @socket,
+      HappyTreeWeb.PlantLive.CardComponent,
+      id: HappyTree.Plants.Plant.device(plant),
+      plant: plant,
+      metrics: %{}
+    %>
+  <% end %>
+</section>
