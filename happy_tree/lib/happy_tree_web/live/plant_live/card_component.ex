@@ -14,18 +14,26 @@ defmodule HappyTreeWeb.PlantLive.CardComponent do
   @impl true
   def render(assigns) do
     ~L"""
-      <tr id="plant-<%= @plant.id %>">
-        <td><%= @plant.common_name %></td>
-        <td><%= @plant.slug %></td>
-        <td><%= @plant.image_url %></td>
-        <td><%= Jason.encode!(@metrics) %></td>
-
-        <td>
-          <span><%= live_redirect "Show", to: Routes.plant_show_path(@socket, :show, @plant) %></span>
-          <span><%= live_patch "Edit", to: Routes.plant_index_path(@socket, :edit, @plant) %></span>
-          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: @plant.id, data: [confirm: "Are you sure?"] %></span>
-        </td>
-      </tr>
+      <div class="w-full h-20 m-4 text-white bg-gray-700 rounded-lg shadow-md">
+        <article class="flex items-center justify-between px-1">
+          <div class='w-16 h-16 m-2 bg-green-500 rounded-lg shadow-md'> </div>
+          <div class="w-40 m-2">
+            <p>Plant 🌱</p>
+            <p class="font-bold"><%= HappyTree.Plants.Plant.device(@plant) %></p>
+          </div>
+          <div class="m-2">
+            <p>Atmospheric Humidity 🌧</p>
+            <p class="font-bold"><%= @metrics["hum"] %></p>
+          </div>
+          <div class="m-2">
+            <p>Temperature 🌡</p>
+            <p class="font-bold"><%= @metrics["temp"] %></p>
+          </div>
+          <div class="flex items-center w-32 h-12 m-2 text-center bg-green-500 rounded-lg shadow-md">
+            <span class="mx-auto"><%= live_redirect "Show Details", to: Routes.plant_show_path(@socket, :show, @plant) %></span>
+          </div>
+        </article>
+      </div>
     """
   end
 end
