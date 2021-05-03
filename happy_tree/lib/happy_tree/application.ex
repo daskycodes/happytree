@@ -29,10 +29,10 @@ defmodule HappyTree.Application do
       handler: {HappyTree.MqttHandler, []},
       server: {
         Tortoise.Transport.SSL,
-        host: Application.fetch_env!(:ex_aws, :iot_host) |> to_charlist,
+        host: Application.get_env(:ex_aws, :iot_host) |> to_charlist,
         port: 8883,
-        keyfile: Application.fetch_env!(:ex_aws, :iot_keyfile) |> to_charlist,
-        certfile: Application.fetch_env!(:ex_aws, :iot_certfile) |> to_charlist,
+        keyfile: Application.get_env(:ex_aws, :iot_keyfile) |> to_charlist,
+        certfile: Application.get_env(:ex_aws, :iot_certfile) |> to_charlist,
         cacerts: :certifi.cacerts(),
         depth: 99,
         versions: [:"tlsv1.2"],
