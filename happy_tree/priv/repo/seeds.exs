@@ -11,3 +11,9 @@
 # and so on) as they will fail if something goes wrong.
 
 HappyTree.Repo.insert!(%HappyTree.Plants.Plant{common_name: "Sunflower", slug: "sunflower"})
+
+HappyTree.Repo.insert!(%HappyTree.Plants.Growth{
+  plant_id: 1,
+  atmospheric_humidity: 4,
+  soil_humidity: 4
+})
