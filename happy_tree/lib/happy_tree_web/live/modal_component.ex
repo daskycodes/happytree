@@ -4,14 +4,14 @@ defmodule HappyTreeWeb.ModalComponent do
   @impl true
   def render(assigns) do
     ~L"""
-    <div id="<%= @id %>" class="phx-modal"
+    <div id="<%= @id %>" class="p-4 phx-modal"
       phx-capture-click="close"
       phx-window-keydown="close"
       phx-key="escape"
       phx-target="#<%= @id %>"
       phx-page-loading>
 
-      <div class="phx-modal-content">
+      <div class="container p-4 mx-auto bg-gray-600 rounded-md shadow-md my-28">
         <%= live_patch raw("&times;"), to: @return_to, class: "phx-modal-close" %>
         <%= live_component @socket, @component, @opts %>
       </div>

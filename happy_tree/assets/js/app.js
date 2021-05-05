@@ -30,11 +30,18 @@ Hooks.Webcam = {
     Webcam.set({
       width: 1280,
       height: 720,
+      dest_width: 1280,
+      dest_height: 720,
       image_format: "jpeg",
       jpeg_quality: 90,
       fps: 30,
     });
     Webcam.attach("#camera");
+
+    Webcam.on("live", function () {
+      var paragraph = document.getElementById("loading");
+      paragraph.textContent = "";
+    });
 
     const hook = this;
     const selector = "#" + this.el.id;

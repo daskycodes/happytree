@@ -1,40 +1,8 @@
-<h2><%= @title %></h2>
-
-<p><%= @plant_name %></p>
-
+<h2 class="text-lg font-bold text-white"><%= @title %></h2>
 <div class="camera_container" phx-hook="Webcam">
-  <button id="snap">Snap</button>
-  <div id="camera"></div>
-  <canvas id="objects" width="1280" height="720"></canvas>
+  <p class="text-xl font-bold text-center text-white" id="loading">Loading Webcam...</p>
+  <div class="max-w-full mx-auto" id="camera"></div>
+  <button class="items-center w-32 h-12 m-4 text-center text-white bg-green-600 rounded-lg shadow-md mx-flex" id="snap">
+    <span class="mx-auto">Register Plant</span>
+  </button>
 </div>
-
-<%= f = form_for @changeset, "#",
-  id: "plant-form",
-  phx_target: @myself,
-  phx_change: "validate",
-  phx_submit: "save" %>
-
-  <%= label f, :casual_name %>
-  <%= text_input f, :casual_name %>
-  <%= error_tag f, :casual_name %>
-
-  <%= label f, :slug %>
-  <%= text_input f, :slug %>
-  <%= error_tag f, :slug %>
-
-  <%= label f, :image_url %>
-  <%= text_input f, :image_url %>
-  <%= error_tag f, :image_url %>
-
-  <%= inputs_for f, :growth, fn pg -> %>
-    <%= label pg, :atmospheric_humidity %>
-    <%= number_input pg, :atmospheric_humidity %>
-    <%= error_tag pg, :atmospheric_humidity %>
-
-    <%= label pg, :soil_humidity %>
-    <%= number_input pg, :soil_humidity %>
-    <%= error_tag pg, :soil_humidity%>
-  <% end %>
-
-  <%= submit "Save", phx_disable_with: "Saving..." %>
-</form>
