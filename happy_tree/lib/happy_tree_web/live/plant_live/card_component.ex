@@ -14,10 +14,10 @@ defmodule HappyTreeWeb.PlantLive.CardComponent do
   @impl true
   def render(assigns) do
     ~L"""
-      <div class="w-full h-20 m-4 text-white bg-gray-700 rounded-lg shadow-md">
-        <article class="flex items-center justify-between px-1">
+      <div class="m-4 text-white bg-gray-700 rounded-lg shadow-md">
+        <article class="flex flex-wrap items-center justify-between px-1">
           <div class='w-16 h-16 m-2 bg-green-500 rounded-lg shadow-md'> </div>
-          <div class="w-40 m-2">
+          <div class="m-2 md:w-40">
             <p>Plant 🌱</p>
             <p class="font-bold"><%= HappyTree.Plants.Plant.device(@plant) %></p>
           </div>
@@ -29,7 +29,7 @@ defmodule HappyTreeWeb.PlantLive.CardComponent do
             <p>Temperature 🌡</p>
             <p class="font-bold"><%= @metrics["temp"] %></p>
           </div>
-          <div class="flex items-center w-32 h-12 m-2 text-center bg-green-500 rounded-lg shadow-md">
+          <div class="flex items-center w-full h-12 m-2 text-center bg-green-500 rounded-lg shadow-md md:w-32">
             <span class="mx-auto"><%= live_redirect "Show Details", to: Routes.plant_show_path(@socket, :show, @plant) %></span>
           </div>
         </article>
