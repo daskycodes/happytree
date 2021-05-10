@@ -10,24 +10,23 @@
     <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </head>
   <body class="bg-gray-600">
-    <header class="text-white bg-gray-700">
-      <section class="container flex items-center h-32 mx-auto">
-        <nav role="flex flex-row">
-          <div>
-            <a href="/" class="">
-              <img src="<%= Routes.static_path(@conn, "/images/happy_tree.png") %>" alt="Happy Tree Logo"/>
-            </a>
-          </div>
-          <div>
-          </div>
-          <ul>
+    <header class="h-16 text-white bg-gray-700">
+      <nav class="container flex items-center justify-between h-full mx-auto">
+        <div>
+          <a href="/" class="text-lg font-bold">
+            🪴 Happy Tree
+          </a>
+        </div>
+        <div class="flex">
+          <ul class="flex">
             <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-              <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
+              <li class="p-1"><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
             <% end %>
+            <li class="p-1"><%= link "Plants", to: Routes.plant_index_path(@conn, :index) %></li>
           </ul>
           <%= render "_user_menu.html", assigns %>
-        </nav>
-      </section>
+        </div>
+      </nav>
     </header>
     <%= @inner_content %>
   </body>

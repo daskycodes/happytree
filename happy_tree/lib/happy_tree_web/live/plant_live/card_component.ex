@@ -3,7 +3,7 @@ defmodule HappyTreeWeb.PlantLive.CardComponent do
 
   @impl true
   def mount(socket) do
-    {:ok, socket}
+    {:ok, assign(socket, :action, nil)}
   end
 
   @impl true
@@ -29,9 +29,11 @@ defmodule HappyTreeWeb.PlantLive.CardComponent do
             <p>Temperature 🌡</p>
             <p class="font-bold"><%= @metrics["temp"] %></p>
           </div>
-          <div class="flex items-center w-full h-12 m-2 text-center bg-green-500 rounded-lg shadow-md md:w-32">
-            <span class="mx-auto"><%= live_redirect "Show Details", to: Routes.plant_show_path(@socket, :show, @plant) %></span>
-          </div>
+          <%= if @action != :show do %>
+            <div class="flex items-center w-full h-12 m-2 text-center bg-green-500 rounded-lg shadow-md md:w-32">
+              <span class="mx-auto"><%= live_redirect "Show Details", to: Routes.plant_show_path(@socket, :show, @plant) %></span>
+            </div>
+          <% end %>
         </article>
       </div>
     """

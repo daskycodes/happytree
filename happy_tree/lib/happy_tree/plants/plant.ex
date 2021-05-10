@@ -7,7 +7,7 @@ defmodule HappyTree.Plants.Plant do
     field :image_url, :string
     field :slug, :string
 
-    has_one :growth, HappyTree.Plants.Growth
+    has_one :growth, HappyTree.Plants.Growth, on_delete: :delete_all
 
     timestamps()
   end

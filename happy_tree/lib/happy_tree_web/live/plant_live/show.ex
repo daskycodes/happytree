@@ -16,6 +16,14 @@ defmodule HappyTreeWeb.PlantLive.Show do
      |> assign(:plant, Plants.get_plant!(id))}
   end
 
+  @impl true
+  def handle_event("delete", %{"id" => id}, socket) do
+    plant = Plants.get_plant!(id)
+    {:ok, _} = Plants.delete_plant(plant)
+
+    {:noreply, socket}
+  end
+
   defp page_title(:show), do: "Show Plant"
   defp page_title(:edit), do: "Edit Plant"
 end

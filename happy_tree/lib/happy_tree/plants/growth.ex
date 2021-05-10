@@ -22,5 +22,6 @@ defmodule HappyTree.Plants.Growth do
       :maximum_temperature,
       :soil_humidity
     ])
+    |> foreign_key_constraint(:plant_id)
   end
 end
