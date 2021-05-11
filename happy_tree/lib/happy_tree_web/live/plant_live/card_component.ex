@@ -8,6 +8,8 @@ defmodule HappyTreeWeb.PlantLive.CardComponent do
 
   @impl true
   def update(assigns, socket) do
+    metrics = HappyTreeMqtt.DeviceTracker.read_data(assigns.id)
+    assigns = Map.put(assigns, :metrics, metrics)
     {:ok, assign(socket, assigns)}
   end
 

@@ -2,7 +2,7 @@ defmodule HappyTreeMqtt.DeviceTracker do
   use GenServer
 
   defmodule State do
-    defstruct device: nil, data: nil, plant: nil
+    defstruct device: nil, data: %{}, plant: nil
   end
 
   # Client Callbacks
@@ -42,6 +42,6 @@ defmodule HappyTreeMqtt.DeviceTracker do
   end
 
   def handle_call(:read_data, _from, state) do
-    {:reply, state, state}
+    {:reply, state.data, state}
   end
 end
