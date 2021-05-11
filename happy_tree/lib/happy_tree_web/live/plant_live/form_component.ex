@@ -61,7 +61,7 @@ defmodule HappyTreeWeb.PlantLive.FormComponent do
   defp save_plant(socket, :new, plant_params) do
     case Plants.create_plant(plant_params) do
       {:ok, plant} ->
-        HappyTree.DeviceServer.start_tracking(plant)
+        HappyTreeMqtt.DeviceServer.start_tracking(plant)
 
         {:noreply,
          socket

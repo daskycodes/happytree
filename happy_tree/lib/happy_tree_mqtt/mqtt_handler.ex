@@ -1,4 +1,4 @@
-defmodule HappyTree.MqttHandler do
+defmodule HappyTreeMqtt.MqttHandler do
   use Tortoise.Handler
 
   require Logger
@@ -9,10 +9,10 @@ defmodule HappyTree.MqttHandler do
   end
 
   def handle_message(["plants", device, "data"], payload, state) do
-    %{device_trackers: device_trackers} = HappyTree.DeviceServer.list_device_trackers()
+    %{device_trackers: device_trackers} = HappyTreeMqtt.DeviceServer.list_device_trackers()
 
     case Map.fetch(device_trackers, device) do
-      {:ok, {_pid, _ref}} -> HappyTree.DeviceTracker.update_data(device, payload)
+      {:ok, {_pid, _ref}} -> HappyTreeMqtt.DeviceTracker.update_data(device, payload)
       :error -> Logger.error("Payload #{payload} sent to untracked device #{device}")
     end
 

@@ -5,6 +5,8 @@ defmodule HappyTreeWeb.PlantLive.Show do
 
   @impl true
   def mount(_params, _session, socket) do
+    if connected?(socket), do: HappyTreeMqtt.DeviceTracker.subscribe()
+
     {:ok, socket}
   end
 
@@ -21,6 +23,12 @@ defmodule HappyTreeWeb.PlantLive.Show do
     plant = Plants.get_plant!(id)
     {:ok, _} = Plants.delete_plant(plant)
 
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_info({:data_updated, device, metrics}, socket) do
+    send_update(HappyTreeWeb.PlantLive.CardComponent, id: device, metrics: metrics)
     {:noreply, socket}
   end
 

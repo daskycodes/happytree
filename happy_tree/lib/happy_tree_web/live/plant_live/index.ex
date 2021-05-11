@@ -6,7 +6,7 @@ defmodule HappyTreeWeb.PlantLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket), do: HappyTree.DeviceTracker.subscribe()
+    if connected?(socket), do: HappyTreeMqtt.DeviceTracker.subscribe()
 
     {:ok, assign(socket, :plants, list_plants())}
   end

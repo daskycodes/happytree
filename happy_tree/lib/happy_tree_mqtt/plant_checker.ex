@@ -1,4 +1,4 @@
-defmodule HappyTree.PlantChecker do
+defmodule HappyTreeMqtt.PlantChecker do
   def check(state, data), do: check_status(:atmospheric_humidity, state, data)
 
   def check_status(:atmospheric_humidity, state, data) do

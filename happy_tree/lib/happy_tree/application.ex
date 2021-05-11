@@ -21,12 +21,12 @@ defmodule HappyTree.Application do
       },
       # Start a worker by calling: HappyTree.Worker.start_link(arg)
       # {HappyTree.Worker, arg}
-      {HappyTree.DeviceServer, []}
+      {HappyTreeMqtt.DeviceServer, []}
     ]
 
     Tortoise.Supervisor.start_child(
       client_id: "tortoise",
-      handler: {HappyTree.MqttHandler, []},
+      handler: {HappyTreeMqtt.MqttHandler, []},
       server: {
         Tortoise.Transport.SSL,
         host: Application.get_env(:ex_aws, :iot_host) |> to_charlist,

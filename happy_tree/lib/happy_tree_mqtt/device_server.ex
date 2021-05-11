@@ -1,4 +1,4 @@
-defmodule HappyTree.DeviceServer do
+defmodule HappyTreeMqtt.DeviceServer do
   use GenServer
 
   require Logger
@@ -40,7 +40,7 @@ defmodule HappyTree.DeviceServer do
     {:ok, pid} =
       DynamicSupervisor.start_child(
         HappyTree.DynamicSupervisor,
-        {HappyTree.DeviceTracker, device}
+        {HappyTreeMqtt.DeviceTracker, device}
       )
 
     ref = Process.monitor(pid)
