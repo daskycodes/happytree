@@ -2,6 +2,7 @@ import torchvision.models as models
 import torch.nn as nn
 import torch.nn.functional as F
 import torch
+import os
 
 
 def accuracy(outputs, labels):
@@ -14,7 +15,7 @@ class ImageClassificationModel(nn.Module):
         super().__init__()
         self.network = models.resnet18(pretrained=True)
         num_ftrs = self.network.fc.in_features
-        self.network.fc = nn.Linear(num_ftrs, 15)
+        self.network.fc = nn.Linear(num_ftrs, len(next(os.walk('flowers'))[1]))
 
     def training_step(self, batch):
         images, labels = batch
