@@ -23,11 +23,11 @@ defmodule HappyTreeWeb.PlantLive.CardComponent do
           </div>
           <div class="m-2">
             <p>Atmospheric Humidity 🌧</p>
-            <p class="font-bold"><%= @metrics["hum"] %></p>
+            <p class="font-bold"><%= @metrics["hum"] %>%</p>
           </div>
           <div class="m-2">
             <p>Temperature 🌡</p>
-            <p class="font-bold"><%= @metrics["temp"] %></p>
+            <p class="font-bold"><%= @metrics["temp"] %>°C</p>
           </div>
           <%= if @action != :show do %>
             <div class="flex items-center w-full h-12 m-2 text-center bg-green-500 rounded-lg shadow-md md:w-32">

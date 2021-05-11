@@ -4,8 +4,8 @@ defmodule HappyTree.Plants.Growth do
 
   schema "growth" do
     field :atmospheric_humidity, :integer
-    field :minimum_temperature, :map
-    field :maximum_temperature, :map
+    field :minimum_temperature, :integer, default: 15
+    field :maximum_temperature, :integer, default: 30
     field :soil_humidity, :integer
 
     belongs_to :plant, HappyTree.Plants.Plant

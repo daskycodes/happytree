@@ -29,12 +29,16 @@
       <%= @plant.image_url %>
     </li>
     <li>
+      <strong>Temperature:</strong>
+      Min: <%= @plant.growth.minimum_temperature %>°C Max: <%= @plant.growth.maximum_temperature %>°C
+    </li>
+    <li>
       <strong>Atmospheric Humidity:</strong>
-      <%= @plant.growth.atmospheric_humidity %>
+      Optimal: <%= @plant.growth.atmospheric_humidity * 10 %>%
     </li>
     <li>
       <strong>Soil Humidity:</strong>
-      <%= @plant.growth.soil_humidity %>
+      Optimal: <%= @plant.growth.soil_humidity * 10 %>%
     </li>
   </ul>
   <div class="flex">
