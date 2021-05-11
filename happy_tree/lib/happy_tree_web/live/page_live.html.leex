@@ -1,3 +1,6 @@
 <section class="container mx-auto my-12">
-  <h1 class="text-lg font-bold text-white"><%= gettext "Welcome to %{name}!", name: "Happy Tree" %></h1>
+  <img class="mx-auto w-60" src="<%= Routes.static_path(@socket, "/images/the-happy-plant.png") %>" alt="A Happy Plant"/>
+  <div class="flex items-center w-32 h-12 m-4 mx-auto text-center text-white bg-green-500 rounded-lg shadow-md">
+    <span class="mx-auto"><%= live_redirect "Go To Plants", to: Routes.plant_index_path(@socket, :index) %></span>
+  </div>
 </section>
