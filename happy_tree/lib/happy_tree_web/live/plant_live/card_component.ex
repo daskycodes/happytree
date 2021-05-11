@@ -16,7 +16,7 @@ defmodule HappyTreeWeb.PlantLive.CardComponent do
     ~L"""
       <div class="m-4 text-white bg-gray-700 rounded-lg shadow-md">
         <article class="flex flex-wrap items-center justify-between px-1">
-          <div class='w-16 h-16 m-2 bg-green-500 rounded-lg shadow-md'> </div>
+          <div class='w-16 h-16 m-2 <%= if device_offline?(@metrics) do %> bg-gray-300 <% else %> bg-green-500 <% end %> rounded-lg shadow-md'> </div>
           <div class="m-2 md:w-40">
             <p>Plant 🌱</p>
             <p class="font-bold"><%= HappyTree.Plants.Plant.device(@plant) %></p>
@@ -37,5 +37,12 @@ defmodule HappyTreeWeb.PlantLive.CardComponent do
         </article>
       </div>
     """
+  end
+
+  defp device_offline?(metrics) do
+    case Map.fetch(metrics, "last_reading") do
+      {:ok, time} -> NaiveDateTime.diff(NaiveDateTime.utc_now(), time) > 30
+      :error -> true
+    end
   end
 end
