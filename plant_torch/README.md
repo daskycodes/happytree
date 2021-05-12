@@ -3,6 +3,8 @@
 This is the machine learning part of the happytree project.
 We are using a pretrained resnet-18 model as base.
 
+[Deep Residual Learning for Image Recognition](https://arxiv.org/pdf/1512.03385.pdf)
+
 ## Installation
 
 First install `python3` then...
