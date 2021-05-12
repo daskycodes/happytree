@@ -1,12 +1,9 @@
-import numpy as np
-import pandas as pd
 import torch
 import torchvision
 from torch.utils.data import random_split
 from torchvision.datasets import ImageFolder
 from torch.utils.data.dataloader import DataLoader
 from classes.image_classification_model import ImageClassificationModel
-
 
 transformer = torchvision.transforms.Compose(
     [
@@ -24,7 +21,8 @@ transformer = torchvision.transforms.Compose(
 base_dir = "plants"
 
 dataset = ImageFolder(base_dir, transform=transformer)
-validation_size = 600
+validation_size = int(len(dataset) / 3)
+print(validation_size)
 training_size = len(dataset) - validation_size
 train_ds, val_ds = random_split(dataset, [training_size, validation_size])
 
@@ -43,7 +41,6 @@ for images, labels in train_dl:
 
 @torch.no_grad()
 def evaluate(model, val_loader):
-    model.load_state_dict(torch.load("plants-resnet.pth"))
     model.eval()
     outputs = [model.validation_step(batch) for batch in val_loader]
     return model.validation_epoch_end(outputs)

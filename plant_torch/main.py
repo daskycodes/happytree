@@ -1,3 +1,5 @@
+from PIL import Image
+from torchvision import transforms
 from flask import Flask, request
 import torch
 import torchvision
@@ -100,16 +102,17 @@ def predict_image(img, model):
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
-        if 'file1' not in request.files:
+        if 'image' not in request.files:
             return 'there is no file1 in form!'
-        file1 = request.files['file1']
-        prediction = predict_image(file1, model)
+        image = request.files['image']
+        image = cv2.imread()
+        prediction = predict_image(image, model)
         return prediction
 
     return '''
     <h1>Upload new File</h1>
     <form method="post" enctype="multipart/form-data">
-      <input type="file" name="file1">
+      <input type="file" name="image">
       <input type="submit">
     </form>
     '''
