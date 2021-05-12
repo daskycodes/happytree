@@ -1,5 +1,5 @@
 from PIL import Image
-from torchvision import transforms
+import torchvision.transforms.functional as TF
 from flask import Flask, request
 import torch
 import torchvision
@@ -93,19 +93,14 @@ def predict_image(img, model):
     return dataset.classes[preds[0].item()]
 
 
-# img, label = train_ds[2]
-
-# print('Label:', dataset.classes[label],
-#       ', Predicted:', predict_image(img, model))
-
-
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         if 'image' not in request.files:
             return 'there is no file1 in form!'
         image = request.files['image']
-        image = cv2.imread()
+        image = Image.open(image)
+        image = TF.to_tensor(image)
         prediction = predict_image(image, model)
         return prediction
 
