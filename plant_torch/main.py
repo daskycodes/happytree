@@ -97,7 +97,7 @@ def predict_image(img, model):
 def upload_file():
     if request.method == 'POST':
         if 'image' not in request.files:
-            return 'there is no file1 in form!'
+            return 'there is no image in form!'
         image = request.files['image']
         image = Image.open(image)
         image = TF.to_tensor(image)
@@ -105,7 +105,7 @@ def upload_file():
         return prediction
 
     return '''
-    <h1>Upload new File</h1>
+    <h1>Recognize a plant! 🌿</h1>
     <form method="post" enctype="multipart/form-data">
       <input type="file" name="image">
       <input type="submit">
