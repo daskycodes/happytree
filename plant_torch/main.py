@@ -1,14 +1,8 @@
-from flask import Flask
-import numpy as np  # linear algebra
-import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
-import os
+from flask import Flask, request
 import torch
 import torchvision
-from torchvision.datasets.utils import download_url
 from torch.utils.data import random_split
 from torchvision.datasets import ImageFolder
-from torchvision import transforms
-from torchvision.transforms import ToTensor
 from torch.utils.data.dataloader import DataLoader
 from classes.image_classification_model import ImageClassificationModel
 
@@ -26,8 +20,7 @@ transformer = torchvision.transforms.Compose(
         ),
     ]
 )
-
-base_dir = "flowers"
+base_dir = "plants"
 
 dataset = ImageFolder(base_dir, transform=transformer)
 validation_size = 100
@@ -39,40 +32,13 @@ val_dl = DataLoader(val_ds, batch_size=32)
 
 model = ImageClassificationModel()
 
-for images, labels in train_dl:
-    print('images.shape:', images.shape)
-    out = model(images)
-    print('out.shape:', out.shape)
-    print('out[0]:', out[0])
-    break
-
 
 @torch.no_grad()
 def evaluate(model, val_loader):
+    model.load_state_dict(torch.load("plants-resnet.pth"))
     model.eval()
     outputs = [model.validation_step(batch) for batch in val_loader]
     return model.validation_epoch_end(outputs)
-
-
-def fit(epochs, lr, model, train_loader, val_loader, opt_func=torch.optim.SGD):
-    history = []
-    optimizer = opt_func(model.parameters(), lr)
-    for epoch in range(epochs):
-        # Training Phase
-        model.train()
-        train_losses = []
-        for batch in train_loader:
-            loss = model.training_step(batch)
-            train_losses.append(loss)
-            loss.backward()
-            optimizer.step()
-            optimizer.zero_grad()
-        # Validation phase
-        result = evaluate(model, val_loader)
-        result['train_loss'] = torch.stack(train_losses).mean().item()
-        model.epoch_end(epoch, result)
-        history.append(result)
-    return history
 
 
 def get_default_device():
@@ -113,16 +79,37 @@ val_dl = DeviceDataLoader(val_dl, device)
 model = to_device(ImageClassificationModel(), device)
 evaluate(model, val_dl)
 
-num_epochs = 3
-opt_func = torch.optim.Adam
-lr = 0.001
 
-history = fit(num_epochs, lr, model, train_dl, val_dl, opt_func)
+def predict_image(img, model):
+    # Convert to a batch of 1
+    xb = to_device(img.unsqueeze(0), device)
+    # Get predictions from model
+    yb = model(xb)
+    # Pick index with highest probability
+    _, preds = torch.max(yb, dim=1)
+    # Retrieve the class label
+    return dataset.classes[preds[0].item()]
 
-weights_fname = 'flower-resnet.pth'
-torch.save(model.state_dict(), weights_fname)
+
+# img, label = train_ds[2]
+
+# print('Label:', dataset.classes[label],
+#       ', Predicted:', predict_image(img, model))
 
 
-@app.route('/')
-def hello_world():
-    return ''.join(dataset.classes)
+@app.route('/', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        if 'file1' not in request.files:
+            return 'there is no file1 in form!'
+        file1 = request.files['file1']
+        prediction = predict_image(file1, model)
+        return prediction
+
+    return '''
+    <h1>Upload new File</h1>
+    <form method="post" enctype="multipart/form-data">
+      <input type="file" name="file1">
+      <input type="submit">
+    </form>
+    '''
