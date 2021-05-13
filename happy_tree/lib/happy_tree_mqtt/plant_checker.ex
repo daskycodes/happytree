@@ -22,13 +22,13 @@ defmodule HappyTreeMqtt.PlantChecker do
   end
 
   def check_status(:temperature, state, data) do
-    current_atmospheric_humidity = data["temp"]
+    temp = data["temp"]
     min_temp = state.plant.growth.minimum_temperature
     max_temp = state.plant.growth.maximum_temperature
 
     range = min_temp..max_temp
 
-    case Enum.member?(range, current_atmospheric_humidity) do
+    case Enum.member?(range, temp) do
       true ->
         Tortoise.publish("tortoise", "plants/#{state.device}/temperature_in_range")
 
