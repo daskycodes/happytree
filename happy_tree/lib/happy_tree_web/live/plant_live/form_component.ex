@@ -3,6 +3,8 @@ defmodule HappyTreeWeb.PlantLive.FormComponent do
 
   alias HappyTree.Plants
 
+  @plants_finder HappyTree.PlantsFinderMock
+
   @impl true
   def update(%{plant: plant} = assigns, socket) do
     changeset = Plants.change_plant(plant)
@@ -31,6 +33,7 @@ defmodule HappyTreeWeb.PlantLive.FormComponent do
 
     with %{name: plant_name, confidence: confidence} when is_binary(plant_name) <-
            HappyTree.PlantsDetector.detect_plant(image),
+         plant_params <- @plants_finder.find_plant(plant_name) do
       save_plant(socket, :new, plant_params |> Map.put(:confidence, confidence))
     else
       _ ->

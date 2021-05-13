@@ -33,13 +33,4 @@ defmodule HappyTree.PlantsDetector do
   defp not_petal?(label) do
     Map.get(label, "Name") != "Petal"
   end
-
-  def find_plant(name) do
-    with {:ok, result} <- Trifolium.Plants.search(name),
-         slug <- List.first(result["data"]) |> Map.get("slug"),
-         {:ok, plant} <- Trifolium.Plants.find(slug) do
-      growth = get_in(plant, ["data", "main_species", "growth"])
-      %{slug: slug, common_name: plant["data"]["common_name"], growth: growth}
-    end
-  end
 end
