@@ -19,6 +19,11 @@ defmodule HappyTreeMqtt.DeviceTracker do
     GenServer.call(:"#{__MODULE__}-#{device}", :read_data)
   end
 
+  def update_plant({:ok, plant}) do
+    device = HappyTree.Plants.Plant.device(plant)
+    GenServer.call(:"#{__MODULE__}-#{device}", {:update_plant, plant})
+  end
+
   def subscribe(), do: Phoenix.PubSub.subscribe(HappyTree.PubSub, "metrics")
 
   def broadcast({:error, _reason} = error), do: error
@@ -43,5 +48,10 @@ defmodule HappyTreeMqtt.DeviceTracker do
 
   def handle_call(:read_data, _from, state) do
     {:reply, state.data, state}
+  end
+
+  def handle_call({:update_plant, plant}, state) do
+    state = %{state | plant: plant}
+    {:reply, {:ok, plant}, state}
   end
 end

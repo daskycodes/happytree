@@ -78,6 +78,7 @@ defmodule HappyTree.Plants do
     |> Plant.changeset(attrs)
     |> Repo.update()
     |> broadcast(:plant_updated)
+    |> HappyTreeMqtt.DeviceTracker.update_plant()
   end
 
   @doc """
