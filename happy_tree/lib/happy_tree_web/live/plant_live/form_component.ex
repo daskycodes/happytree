@@ -29,9 +29,9 @@ defmodule HappyTreeWeb.PlantLive.FormComponent do
   def handle_event("snap", %{"dataUri" => "data:image/jpeg;base64," <> base64frame}, socket) do
     image = Base.decode64!(base64frame)
 
-    with plant_name when is_binary(plant_name) <- HappyTree.PlantsDetector.detect_plant(image),
-         plant_params <- HappyTree.PlantsDetector.find_plant(plant_name) do
-      save_plant(socket, :new, plant_params)
+    with %{name: plant_name, confidence: confidence} when is_binary(plant_name) <-
+           HappyTree.PlantsDetector.detect_plant(image),
+      save_plant(socket, :new, plant_params |> Map.put(:confidence, confidence))
     else
       _ ->
         {:noreply,
@@ -65,11 +65,15 @@ defmodule HappyTreeWeb.PlantLive.FormComponent do
 
         {:noreply,
          socket
-         |> put_flash(:info, "Plant created successfully")
+         |> put_flash(:info, success_save_message(plant_params))
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
     end
+  end
+
+  defp success_save_message(plant_params) do
+    "Added #{plant_params.common_name} with #{plant_params.confidence}% Confidence"
   end
 end
