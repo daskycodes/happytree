@@ -32,7 +32,7 @@ defmodule HappyTreeWeb.PlantLive.CardComponent do
             <p class="font-bold"><%= @metrics["temp"] %>°C</p>
           </div>
           <%= if @action != :show do %>
-            <div class="flex items-center w-full h-12 m-2 text-center bg-green-500 rounded-lg shadow-md md:w-32">
+            <div class="flex items-center w-full h-12 m-2 text-center bg-green-500 rounded-lg shadow-md lg:w-32">
               <span class="mx-auto"><%= live_redirect "Show Details", to: Routes.plant_show_path(@socket, :show, @plant) %></span>
             </div>
           <% end %>
