@@ -15,6 +15,10 @@ defmodule HappyTreeMqtt.DeviceServer do
     GenServer.cast(__MODULE__, {:start_tracking, plant})
   end
 
+  def stop_tracking(plant) do
+    GenServer.call(__MODULE__, {:stop_tracking, plant})
+  end
+
   def list_device_trackers() do
     GenServer.call(__MODULE__, :list_device_trackers)
   end
@@ -34,6 +38,17 @@ defmodule HappyTreeMqtt.DeviceServer do
 
   def handle_call(:list_device_trackers, _from, state) do
     {:reply, state, state}
+  end
+
+  def handle_call({:stop_tracking, device}, _from, state) do
+    state.device_trackers
+    |> Map.get(device)
+    |> elem(0)
+    |> Process.exit(:normal)
+
+    Logger.info("Stopped to track #{device} metrics")
+
+    {:reply, :ok, state}
   end
 
   defp start_device_tracker(device) do

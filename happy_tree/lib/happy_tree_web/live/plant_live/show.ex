@@ -22,6 +22,8 @@ defmodule HappyTreeWeb.PlantLive.Show do
   def handle_event("delete", %{"id" => id}, socket) do
     plant = Plants.get_plant!(id)
     {:ok, _} = Plants.delete_plant(plant)
+    device = HappyTree.Plants.Plant.device(plant)
+    HappyTreeMqtt.DeviceServer.stop_tracking(device)
 
     {:noreply, socket}
   end
