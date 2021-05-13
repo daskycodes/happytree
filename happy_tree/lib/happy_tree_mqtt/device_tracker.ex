@@ -1,5 +1,5 @@
 defmodule HappyTreeMqtt.DeviceTracker do
-  use GenServer
+  use GenServer, restart: :transient
 
   defmodule State do
     defstruct device: nil, data: %{}, plant: nil
@@ -8,20 +8,24 @@ defmodule HappyTreeMqtt.DeviceTracker do
   # Client Callbacks
 
   def start_link(%{device: device, plant: _plant} = args) do
-    GenServer.start_link(__MODULE__, args, name: :"#{__MODULE__}-#{device}")
+    GenServer.start_link(__MODULE__, args, name: via(device))
   end
 
   def update_data(device, data) do
-    GenServer.call(:"#{__MODULE__}-#{device}", {:update_data, data})
+    GenServer.call(device_pid(device), {:update_data, data})
   end
 
   def read_data(device) do
-    GenServer.call(:"#{__MODULE__}-#{device}", :read_data)
+    GenServer.call(device_pid(device), :read_data)
   end
 
   def update_plant({:ok, plant}) do
     device = HappyTree.Plants.Plant.device(plant)
-    GenServer.call(:"#{__MODULE__}-#{device}", {:update_plant, plant})
+    GenServer.call(device_pid(device), {:update_plant, plant})
+  end
+
+  def stop(device) do
+    GenServer.stop(device_pid(device))
   end
 
   def subscribe(), do: Phoenix.PubSub.subscribe(HappyTree.PubSub, "metrics")
@@ -53,5 +57,16 @@ defmodule HappyTreeMqtt.DeviceTracker do
   def handle_call({:update_plant, plant}, state) do
     state = %{state | plant: plant}
     {:reply, {:ok, plant}, state}
+  end
+
+  # Private Function
+
+  defp via(key) do
+    {:via, Registry, {HappyTree.DeviceRegistry, key}}
+  end
+
+  defp device_pid(device) do
+    [{pid, _value}] = Registry.lookup(HappyTree.DeviceRegistry, device)
+    pid
   end
 end

@@ -4,7 +4,7 @@ defmodule HappyTree.PlantsDetector do
          labels when labels != [] <- filter_plant_labels(labels) do
       name = Map.get(List.first(labels), "Name")
       confidence = Map.get(List.first(labels), "Confidence")
-      %{name: name, confidence: confidence} |> IO.inspect()
+      %{name: name, confidence: confidence}
     end
   end
 

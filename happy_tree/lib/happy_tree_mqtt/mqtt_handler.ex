@@ -9,11 +9,9 @@ defmodule HappyTreeMqtt.MqttHandler do
   end
 
   def handle_message(["plants", device, "data"], payload, state) do
-    %{device_trackers: device_trackers} = HappyTreeMqtt.DeviceServer.list_device_trackers()
-
-    case Map.fetch(device_trackers, device) do
-      {:ok, {_pid, _ref}} -> HappyTreeMqtt.DeviceTracker.update_data(device, payload)
-      :error -> Logger.error("Payload #{payload} sent to untracked device #{device}")
+    case Registry.lookup(HappyTree.DeviceRegistry, device) do
+      [{_pid, nil}] -> HappyTreeMqtt.DeviceTracker.update_data(device, payload)
+      [] -> Logger.error("Payload #{payload} sent to untracked device #{device}")
     end
 
     {:ok, state}

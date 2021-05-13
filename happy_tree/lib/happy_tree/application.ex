@@ -15,6 +15,7 @@ defmodule HappyTree.Application do
       {Phoenix.PubSub, name: HappyTree.PubSub},
       # Start the Endpoint (http/https)
       HappyTreeWeb.Endpoint,
+      {Registry, keys: :unique, name: HappyTree.DeviceRegistry},
       {
         DynamicSupervisor,
         strategy: :one_for_one, name: HappyTree.DynamicSupervisor
