@@ -16,7 +16,7 @@ defmodule HappyTreeWeb.PlantLive.CardComponent do
   @impl true
   def render(assigns) do
     ~L"""
-      <div class="m-4 text-white bg-gray-700 rounded-lg shadow-md">
+      <div class="m-4 text-white bg-gray-700 rounded-lg shadow-md <%= if @plant.__meta__.state == :deleted do %>hidden <% end %>">
         <article class="flex flex-wrap items-center justify-between px-1">
           <div class='w-16 h-16 m-2 <%= if device_offline?(@metrics) do %> bg-gray-300 <% else %> bg-green-500 <% end %> rounded-lg shadow-md'> </div>
           <div class="m-2 md:w-40">

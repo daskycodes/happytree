@@ -1,5 +1,5 @@
-<section class="mx-auto container my-12">
-  <div class="m-4 w-32 h-12 bg-gray-700 rounded-lg flex items-center text-white text-center shadow-md">
+<section class="container mx-auto my-12">
+  <div class="flex items-center w-32 h-12 m-4 text-center text-white bg-gray-700 rounded-lg shadow-md">
     <span class="mx-auto"><%= live_patch "New Plant", to: Routes.plant_index_path(@socket, :new) %></span>
   </div>
   <%= if @live_action in [:new, :edit] do %>
@@ -10,12 +10,14 @@
       plant: @plant,
       return_to: Routes.plant_index_path(@socket, :index) %>
   <% end %>
-  <%= for plant <- @plants do %>
-    <%= live_component @socket,
-      HappyTreeWeb.PlantLive.CardComponent,
-      id: HappyTree.Plants.Plant.device(plant),
-      plant: plant,
-      metrics: %{}
-    %>
-  <% end %>
+  <div id="plants" phx-update="prepend">
+    <%= for plant <- @plants do %>
+      <%= live_component @socket,
+        HappyTreeWeb.PlantLive.CardComponent,
+        id: HappyTree.Plants.Plant.device(plant),
+        plant: plant,
+        metrics: %{}
+      %>
+    <% end %>
+  </div>
 </section>

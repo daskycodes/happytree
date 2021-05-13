@@ -58,6 +58,7 @@ defmodule HappyTree.Plants do
     %Plant{}
     |> Plant.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:plant_created)
   end
 
   @doc """
@@ -76,6 +77,7 @@ defmodule HappyTree.Plants do
     plant
     |> Plant.changeset(attrs)
     |> Repo.update()
+    |> broadcast(:plant_updated)
   end
 
   @doc """
@@ -92,6 +94,7 @@ defmodule HappyTree.Plants do
   """
   def delete_plant(%Plant{} = plant) do
     Repo.delete(plant)
+    |> broadcast(:plant_deleted)
   end
 
   @doc """
@@ -105,5 +108,14 @@ defmodule HappyTree.Plants do
   """
   def change_plant(%Plant{} = plant, attrs \\ %{}) do
     Plant.changeset(plant, attrs)
+  end
+
+  def subscribe(), do: Phoenix.PubSub.subscribe(HappyTree.PubSub, "plants")
+
+  def broadcast({:error, _reason} = error), do: error
+
+  def broadcast({:ok, plant}, event) do
+    Phoenix.PubSub.broadcast(HappyTree.PubSub, "plants", {event, plant})
+    {:ok, plant}
   end
 end

@@ -6,9 +6,12 @@ defmodule HappyTreeWeb.PlantLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket), do: HappyTreeMqtt.DeviceTracker.subscribe()
+    if connected?(socket) do
+      HappyTreeMqtt.DeviceTracker.subscribe()
+      HappyTree.Plants.subscribe()
+    end
 
-    {:ok, assign(socket, :plants, list_plants())}
+    {:ok, assign(socket, :plants, list_plants()), temporary_assigns: [plants: []]}
   end
 
   @impl true
@@ -46,6 +49,21 @@ defmodule HappyTreeWeb.PlantLive.Index do
   def handle_info({:data_updated, device, metrics}, socket) do
     send_update(HappyTreeWeb.PlantLive.CardComponent, id: device, metrics: metrics)
     {:noreply, socket}
+  end
+
+  @impl true
+  def handle_info({:plant_created, plant}, socket) do
+    {:noreply, update(socket, :plants, fn plants -> [plant | plants] end)}
+  end
+
+  @impl true
+  def handle_info({:plant_updated, plant}, socket) do
+    {:noreply, update(socket, :plants, fn plants -> [plant | plants] end)}
+  end
+
+  @impl true
+  def handle_info({:plant_deleted, plant}, socket) do
+    {:noreply, update(socket, :plants, fn plants -> [plant | plants] end)}
   end
 
   defp list_plants do
