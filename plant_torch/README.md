@@ -50,6 +50,7 @@ Now you can run `python3 train.py` to train the model
 First make sure flask is installed and you have the trained weight file in the main folder `plants-resnet.pth`
 
 - `pip install flask`
+- `pip install Pillow`
 - `export FLASK_APP=main.py`
 - `flask run`
 
