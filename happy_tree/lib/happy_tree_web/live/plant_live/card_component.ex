@@ -18,18 +18,18 @@ defmodule HappyTreeWeb.PlantLive.CardComponent do
     ~L"""
       <div class="m-4 text-white bg-gray-700 rounded-lg shadow-md <%= if @plant.__meta__.state == :deleted do %>hidden <% end %>">
         <article class="flex flex-wrap items-center justify-between px-1">
-          <div class='w-16 h-16 m-2 <%= if device_offline?(@metrics) do %> bg-gray-300 <% else %> bg-green-500 <% end %> rounded-lg shadow-md'> </div>
+          <div class='w-16 h-16 m-2 <%= if device_offline?(@metrics) do %> bg-gray-300 <% else %> <%= status_color(@metrics) %> <% end %> rounded-lg shadow-md'> </div>
           <div class="m-2 md:w-40">
             <p>Plant 🌱</p>
             <p class="font-bold"><%= HappyTree.Plants.Plant.device(@plant) %></p>
           </div>
           <div class="m-2">
             <p>Atmospheric Humidity 🌧</p>
-            <p class="font-bold"><%= @metrics["hum"] %>%</p>
+            <p class="font-bold"><%= @metrics["hum"] %>% <%= status_emoji(@metrics["hum_status"]) %></p>
           </div>
           <div class="m-2">
             <p>Temperature 🌡</p>
-            <p class="font-bold"><%= @metrics["temp"] %>°C</p>
+            <p class="font-bold"><%= @metrics["temp"] %>°C <%= status_emoji(@metrics["temp_status"]) %></p>
           </div>
           <%= if @action != :show do %>
             <div class="flex items-center w-full h-12 m-2 text-center bg-green-500 rounded-lg shadow-md lg:w-32">
@@ -47,4 +47,11 @@ defmodule HappyTreeWeb.PlantLive.CardComponent do
       :error -> true
     end
   end
+
+  defp status_emoji(:out_of_range), do: "🙁"
+  defp status_emoji(:in_range), do: "🙂"
+  defp status_emoji(_), do: ""
+
+  defp status_color(%{"hum_status" => :in_range, "temp_status" => :in_range}), do: "bg-green-500"
+  defp status_color(_), do: "bg-red-500"
 end

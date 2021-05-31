@@ -45,7 +45,7 @@ defmodule HappyTreeMqtt.DeviceTracker do
 
   def handle_call({:update_data, data}, _from, state) do
     data = Jason.decode!(data) |> Map.put("last_reading", NaiveDateTime.utc_now())
-    HappyTreeMqtt.PlantChecker.check(state, data)
+    data = Map.merge(data, HappyTreeMqtt.PlantChecker.check(state, data))
     broadcast({:ok, state.device, data}, :data_updated)
     {:reply, :ok, %{state | data: data}}
   end
