@@ -16,6 +16,18 @@ config :happy_tree, HappyTreeWeb.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+# https://github.com/ex-aws/ex_aws
+config :ex_aws,
+  secret_access_key: System.get_env("AWS_SECRET_ACCESS_KEY"),
+  access_key_id: System.get_env("AWS_ACCESS_KEY_ID"),
+  region: "eu-central-1",
+  iot_keyfile: System.get_env("AWS_IOT_KEYFILE"),
+  iot_certfile: System.get_env("AWS_IOT_CERTFILE"),
+  iot_host: System.get_env("AWS_IOT_HOST"),
+  iot_port: 8883,
+  iot_transport: Tortoise.Transport.SSL,
+  json_codec: Jason
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key

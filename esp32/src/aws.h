@@ -1,4 +1,5 @@
-#define AWS_END_POINT "abcd-ats.iot.eu-central-1.amazonaws.com"
+#define AWS_END_POINT "broker.mqttdashboard.com"
+#define AWS_PORT 1883
 
 #define DEVICE_NAME "sunflower1"
 

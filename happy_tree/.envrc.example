@@ -1,6 +1,7 @@
 export AWS_SECRET_ACCESS_KEY=
 export AWS_ACCESS_KEY_ID=
-export TREFLE_TOKEN=
+export TREFLE_TOKEN=7
+export TREFLE_API=api.floracodex.com/
 export AWS_IOT_KEYFILE=
 export AWS_IOT_CERTFILE=
 export AWS_IOT_HOST=

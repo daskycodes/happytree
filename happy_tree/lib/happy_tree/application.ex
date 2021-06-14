@@ -28,19 +28,7 @@ defmodule HappyTree.Application do
     Tortoise.Supervisor.start_child(
       client_id: "tortoise",
       handler: {HappyTreeMqtt.MqttHandler, []},
-      server: {
-        Tortoise.Transport.SSL,
-        host: Application.get_env(:ex_aws, :iot_host) |> to_charlist,
-        port: 8883,
-        keyfile: Application.get_env(:ex_aws, :iot_keyfile) |> to_charlist,
-        certfile: Application.get_env(:ex_aws, :iot_certfile) |> to_charlist,
-        cacerts: :certifi.cacerts(),
-        depth: 99,
-        versions: [:"tlsv1.2"],
-        customize_hostname_check: [
-          match_fun: :public_key.pkix_verify_hostname_match_fun(:https)
-        ]
-      },
+      server: {Tortoise.Transport.Tcp, host: 'broker.mqttdashboard.com', port: 1883},
       subscriptions: [{"plants/+/data", 0}]
     )
 

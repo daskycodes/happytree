@@ -74,3 +74,15 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# https://github.com/ex-aws/ex_aws
+config :ex_aws,
+  secret_access_key: System.get_env("AWS_SECRET_ACCESS_KEY"),
+  access_key_id: System.get_env("AWS_ACCESS_KEY_ID"),
+  region: "eu-central-1",
+  iot_keyfile: System.get_env("AWS_IOT_KEYFILE"),
+  iot_certfile: System.get_env("AWS_IOT_CERTFILE"),
+  iot_host: 'localhost',
+  json_codec: Jason,
+  iot_port: 1883,
+  iot_transport: Tortoise.Transport.Tcp

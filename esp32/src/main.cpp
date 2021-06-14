@@ -2,7 +2,7 @@
 #include <WiFi.h>
 #include <certs.h>
 #include <aws.h>
-#include <WiFiClientSecure.h>
+#include <WiFiClient.h>
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 
@@ -24,8 +24,8 @@ const char *PWD = "abcd";
 
 long lastMsg = 0;
 
-WiFiClientSecure secureClient = WiFiClientSecure();
-PubSubClient mqttClient(secureClient);
+WiFiClient espClient;
+PubSubClient mqttClient(espClient);
 DHT dht(DHT_PIN, DHT_TYPE);
 
 void callback(char *topic, byte *payload, unsigned int length)
@@ -66,7 +66,7 @@ void connectToWiFi()
     Serial.print(".");
     delay(500);
     Serial.print(WiFi.status());
-    // we can even make the ESP32 to sleep
+    // we can even make the ESP32 to sleepsc
   }
 
   Serial.print("Connected - ");
@@ -75,11 +75,11 @@ void connectToWiFi()
 
 void connectToAWS()
 {
-  mqttClient.setServer(AWS_END_POINT, 8883);
+  mqttClient.setServer(AWS_END_POINT, AWS_PORT);
   mqttClient.setCallback(callback);
-  secureClient.setCACert(AWS_PUBLIC_CERT);
-  secureClient.setCertificate(AWS_DEVICE_CERT);
-  secureClient.setPrivateKey(AWS_PRIVATE_KEY);
+  // secureClient.setCACert(AWS_PUBLIC_CERT);
+  // secureClient.setCertificate(AWS_DEVICE_CERT);
+  // secureClient.setPrivateKey(AWS_PRIVATE_KEY);
 
   Serial.println("Connecting to MQTT....");
 
@@ -105,7 +105,7 @@ void setup()
   connectToAWS();
 
   // set up the LCD's number of columns and rows:
-  lcd.begin(16, 2)
+  lcd.begin(16, 2);
 }
 
 void loop()

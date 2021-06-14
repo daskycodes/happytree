@@ -26,7 +26,7 @@ defmodule HappyTreeMqtt.PlantChecker do
   end
 
   def check_status(:temperature, state, data) do
-    temp = data["temp"]
+    temp = data["temp"] |> trunc()
     min_temp = state.plant.growth.minimum_temperature
     max_temp = state.plant.growth.maximum_temperature
 

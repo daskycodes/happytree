@@ -21,6 +21,7 @@ defmodule HappyTree.Plants.Plant do
   end
 
   def device(%__MODULE__{} = plant) do
-    "#{plant.slug}#{plant.id}"
+    common_name = String.downcase(plant.common_name) |> String.replace(" ", "")
+    "#{common_name}#{plant.id}"
   end
 end

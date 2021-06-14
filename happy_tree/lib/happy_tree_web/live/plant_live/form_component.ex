@@ -3,7 +3,7 @@ defmodule HappyTreeWeb.PlantLive.FormComponent do
 
   alias HappyTree.Plants
 
-  @plants_finder HappyTree.PlantsFinderMock
+  @plants_finder HappyTree.PlantsFinder
 
   @impl true
   def update(%{plant: plant} = assigns, socket) do
