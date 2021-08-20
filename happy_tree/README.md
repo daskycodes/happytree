@@ -1,11 +1,17 @@
 # HappyTree
 
+## Set the environment variables
+
+run `cp	.env.example .env` and update the required env variables for AWS and Trefle.
+
+## Start the server
+
 To start your Phoenix server:
 
 - Install dependencies with `mix deps.get`
+- Start Postgres with `docker-compose up`
 - Create and migrate your database with `mix ecto.setup`
 - Install Node.js dependencies with `npm install` inside the `assets` directory
-- Start Postgres with `docker-compose up`
 - Start Phoenix endpoint with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.

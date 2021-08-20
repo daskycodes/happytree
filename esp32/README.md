@@ -1,5 +1,11 @@
 # ESP32 AWS IoT (How to connect ESP32 to AWS IoT Core)
 
+## Anschlüsse
+
+![](schema.png)
+
+## Code
+
 Bevor wir den ESP32 Code auf unseren ESP32 laden müssen wir folgende Konfiguration an unser Gerät anpassen.
 
 In der `aws.h` Datei finden wir folgende Konfiguration:
