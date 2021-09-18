@@ -3,7 +3,8 @@ defmodule HappyTreeWeb.PlantLive.FormComponent do
 
   alias HappyTree.Plants
 
-  @plants_finder HappyTree.PlantsFinder
+  @plants_finder HappyTree.Config.plants_finder()
+  @plants_detector HappyTree.Config.plants_detector()
 
   @impl true
   def update(%{plant: plant} = assigns, socket) do
@@ -26,13 +27,12 @@ defmodule HappyTreeWeb.PlantLive.FormComponent do
     {:noreply, assign(socket, :changeset, changeset)}
   end
 
-  # TODO Handle growth params
   @impl true
   def handle_event("snap", %{"dataUri" => "data:image/jpeg;base64," <> base64frame}, socket) do
     image = Base.decode64!(base64frame)
 
     with %{name: plant_name, confidence: confidence} when is_binary(plant_name) <-
-           HappyTree.PlantsDetector.detect_plant(image),
+           @plants_detector.detect_plant(image),
          plant_params <- @plants_finder.find_plant(plant_name) do
       save_plant(socket, :new, plant_params |> Map.put(:confidence, confidence))
     else
